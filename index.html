@@ -1,0 +1,46 @@
+import logging
+from aiogram import Bot, Dispatcher, types
+from aiogram.utils import executor
+
+# Configurations
+BOT_TOKEN = "8027805011:AAHNnRgy-ir09oHN3uSsWYSLS7NyO6ZyJhU" 
+ZONE_ID = "2799758" 
+
+# Bot setup
+logging.basicConfig(level=logging.INFO)
+bot = Bot(token=BOT_TOKEN, parse_mode="HTML")  # এখানে ভুল সংশোধন করা হয়েছে
+dp = Dispatcher(bot)
+
+# Start command
+@dp.message_handler(commands=["start"])
+async def start(message: types.Message):
+    await message.answer(
+        "👋 স্বাগতম!\n"
+        "🎯 বিজ্ঞাপন দেখে আয় করুন\n"
+        "💰 ব্যালেন্স চেক করুন: /balance\n"
+        "📺 বিজ্ঞাপন দেখুন: /watch_ad\n"
+        "🏧 টাকা উত্তোলন করুন: /withdraw"
+    )
+
+# Watch Ad command
+@dp.message_handler(commands=["watch_ad"])
+async def watch_ad(message: types.Message):
+    ad_url = f"https://syndication.exoclick.com/tag.php?zoneid={ZONE_ID}"2799758
+    await message.answer(
+        f"🔔 **বিজ্ঞাপন দেখুন & আয় করুন!**\n\n"
+        f"👉 **[বিজ্ঞাপন দেখুন]({ad_url})**", disable_web_page_preview=True
+    )
+
+# Balance command (ডেমো)
+@dp.message_handler(commands=["balance"])
+async def balance(message: types.Message):
+    await message.answer("💰 আপনার ব্যালেন্স: 0.00 BDT (ডেমো)")
+
+# Withdraw command (ডেমো)
+@dp.message_handler(commands=["withdraw"])
+async def withdraw(message: types.Message):
+    await message.answer("🏧 টাকা উত্তোলনের জন্য মিনিমাম ব্যালেন্স ৫০ BDT")
+
+# Run bot
+if __name__ == "__main__":
+    executor.start_polling(dp, skip_updates=True)
